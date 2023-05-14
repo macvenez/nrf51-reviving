@@ -1,3 +1,22 @@
+# How it works
+### NRF side
+NRF code is quite easy and it basically runs standalone, waiting for new data request possibly sent by Raspberry over BLE
+1. Device initializes various ble services: Temperature and humidity data (thanks to connected HTU21D sensor) and VCC voltage (provided by CR2032 battery). No external hardware is required to measure VCC voltage as NRF51822 has an internal voltage reference which can compare to its own supply voltage (selecting the appropriate 1/3 prescaler). You can find more info [here](https://os.mbed.com/users/MarceloSalazar/notebook/measuring-battery-voltage-with-nordic-nrf51x/)
+2. Device sets power mode (actually I discovered `NRF_POWER_MODE_LOWPWR` is anyway selected but it's good to leave the instruction there)
+3. Device goes to sleep and awaits a change event on the LedService (you can send any value to that service in order to wake up the NRF and do its things)
+4. When the LedService changes its value it gets sensor data and VCC voltage and updates services value accordingly
+5. Device goes back to sleep again and waits for a new event change to wake up
+**NOTE!** you can change `ADVERTISING_INTERVAL` in order to get faster connection from Raspberry Pi (in some cases I tested, setting a higher advertising interval value to more than 3000 makes the Raspberry not connect at all). Reducing the value of course increases power consumption as NRF has to send advertising packets more often.
+With the current setup I measured with a shunt resistor and oscilloscope a average current (Raspberry requests data each 30 seconds) of ~3.5µA, the CR2032 battery (210 mAh rated) should last 7 years __without considering__ self-discharge rate 
+
+### Raspberry side
+You'll need `bluepy` python module: `pip install bluepy`
+1. Raspberry tries to connect to NRF51 through BLE, if it fails it tries again infinitely (definitely something you should avoid but that's fine for me)
+2. Once it connect it updates LedService value in order to trigger a new measurement from the NRF
+3. Waits for a new value thanks to BLE service notification system. This allows to get the latest value from the device. If you wanted to get the new value without notification system check [`wb-temp-read.py`](src/wb-remp-read.py).
+4. Performs HTTP get request to upload data to my Dashboard (Emoncms in my case), but you can of course do whatever you want when you get your data
+**NOTE!** If you are using `wb-temp-read.py` example when you read data you are actually getting the previous value because the measure and update service on the NRF takes time and you read data from the service when it hasn't updated yet. That's why I use the notify example for this kind of task.
+
 ## NRF51822 code
 That's the [code](src/sleep_greenhouse/sleep_greenhouse.ino) actually running on my NRF51822 custom board:
 
