@@ -16,7 +16,7 @@ With the current setup I measured with a shunt resistor and oscilloscope a avera
 You'll need `bluepy` python module: `pip install bluepy`
 1. Raspberry tries to connect to NRF51 through BLE, if it fails it tries again infinitely (definitely something you should avoid but that's fine for me)
 2. Once it connect it updates LedService value in order to trigger a new measurement from the NRF
-3. Waits for a new value thanks to BLE service notification system. This allows to get the latest value from the device. If you wanted to get the new value without notification system check [`wb-temp-read.py`](src/wb-remp-read.py).
+3. Waits for a new value thanks to BLE service notification system. This allows to get the latest value from the device. If you wanted to get the new value without notification system check [`wb-temp-read.py`](src/wb-temp-read.py).
 4. Performs HTTP get request to upload data to my Dashboard (Emoncms in my case), but you can of course do whatever you want when you get your data
 
 **NOTE!** If you are using `wb-temp-read.py` example when you read data you are actually getting the previous value because the measure and update service on the NRF takes time and you read data from the service when it hasn't updated yet. That's why I use the notify example for this kind of task.
