@@ -1,4 +1,6 @@
-# How it works
+# Wunderbar NRF51822 modules reverse-engineering
+That's a work-in-progress, please help us contributing with more info and sketches!
+## How it works
 ### NRF side
 NRF code is quite easy and it basically runs standalone, waiting for new data request possibly sent by Raspberry over BLE
 1. Device initializes various ble services: Temperature and humidity data (thanks to connected HTU21D sensor) and VCC voltage (provided by CR2032 battery). No external hardware is required to measure VCC voltage as NRF51822 has an internal voltage reference which can compare to its own supply voltage (selecting the appropriate 1/3 prescaler). You can find more info [here](https://os.mbed.com/users/MarceloSalazar/notebook/measuring-battery-voltage-with-nordic-nrf51x/)
