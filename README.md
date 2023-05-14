@@ -1,3 +1,4 @@
+## NRF51822 code
 That's the [code](src/sleep_greenhouse/sleep_greenhouse.ino) actually running on my NRF51822 custom board:
 
 ```C
@@ -151,6 +152,7 @@ uint16_t my_analogin_read_u16(void)
 }
 ```
 
+## Raspberry Pi 3B as BLE Gateway
 That's the [code](src/wb-temp-notify.py) running on my Raspberry Pi, which serves as a Bluetooth BLE gateway:
 ![[Microcontrollori/NRF51-Wunderbar/nrf51-resurfacing/src/wb-temp-notify.py]]
 ```python
