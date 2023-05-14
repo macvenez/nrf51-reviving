@@ -1,5 +1,4 @@
-That's the code actually running on my NRF51822 custom board:
-![[Microcontrollori/NRF51-Wunderbar/nrf51-resurfacing/src/sleep_greenhouse/sleep_greenhouse.ino]]
+That's the [code](src/sleep_greenhouse/sleep_greenhouse.ino) actually running on my NRF51822 custom board:
 
 ```C
 #include <Arduino.h>
@@ -152,7 +151,7 @@ uint16_t my_analogin_read_u16(void)
 }
 ```
 
-That's the code running on my Raspberry Pi, which serves as a Bluetooth BLE gateway:
+That's the [code](src/wb-temp-notify.py) running on my Raspberry Pi, which serves as a Bluetooth BLE gateway:
 ![[Microcontrollori/NRF51-Wunderbar/nrf51-resurfacing/src/wb-temp-notify.py]]
 ```python
 import struct
